@@ -2,10 +2,10 @@ stages:
   - e2e_test
 
 e2e_test:
-  image: node:latest
+  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
   stage: e2e_test
   script:
     # install dependencies
     - npm ci
     # run Cypress tests
-    - npm run e2e
+    - npx cypress run --browser firefox
