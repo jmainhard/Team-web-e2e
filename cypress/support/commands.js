@@ -52,10 +52,6 @@ Cypress.Commands.add("login", () => {
 Cypress.Commands.add("getClubs", (token) => {
 	cy.request({
 		url: `http://3.138.52.135:3000/clubs`,
-		body: {
-			email: "jorge.silva6956@gmail.com",
-			password: "123asd_",
-		},
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
