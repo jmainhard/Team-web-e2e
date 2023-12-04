@@ -35,7 +35,7 @@ Cypress.Commands.add("login", () => {
 			url: `${Cypress.env("api_server")}/auth/login`,
 			body: {
 				// read from env (private)
-				email: Cypress.env("email"), 
+				email: Cypress.env("email"),
 				password: Cypress.env("password"),
 			},
 		})
@@ -60,4 +60,14 @@ Cypress.Commands.add("getClubs", (token) => {
 	}).then(({ body }) => {
 		return body.clubs;
 	});
+});
+
+/**
+ * Add a club given its name and description
+ */
+Cypress.Commands.add("addClub", (name, description) => {
+	cy.get("div[for=add-club]").click();
+	cy.get('input[aria-label="Club name"]').type(name);
+	cy.get('input[aria-label="Club description"]').type(description);
+	cy.contains('button', 'Add Club').click();
 });
