@@ -1,0 +1,5 @@
+# Top-most EditorConfig file
+root = true
+# Tab indentation
+[*]
+indent_style = tab
