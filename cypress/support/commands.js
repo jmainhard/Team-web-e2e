@@ -31,10 +31,12 @@ Cypress.Commands.add("login", () => {
 	return cy
 		.request({
 			method: "POST",
-			url: `http://3.138.52.135:3000/auth/login`,
+			// read from config (public)
+			url: `${Cypress.env("api_server")}/auth/login`,
 			body: {
-				email: "SET_YOUR_EMAIL",
-				password: "SET_YOUR_PASSWORD",
+				// read from env (private)
+				email: Cypress.env("email"), 
+				password: Cypress.env("password"),
 			},
 		})
 		.then(({ body }) => {
@@ -51,7 +53,7 @@ Cypress.Commands.add("login", () => {
  */
 Cypress.Commands.add("getClubs", (token) => {
 	cy.request({
-		url: `http://3.138.52.135:3000/clubs`,
+		url: `${Cypress.env("api_server")}/clubs`,
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
