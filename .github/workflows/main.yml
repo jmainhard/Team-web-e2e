@@ -8,6 +8,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Create cypress.env.json
+        run: |
+          echo '{
+            "email": "${{ secrets.CYPRESS_EMAIL }}",
+            "password": "${{ secrets.CYPRESS_PASSWORD }}"
+          }' > cypress.env.json
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
