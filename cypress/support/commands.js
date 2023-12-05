@@ -79,3 +79,26 @@ Cypress.Commands.add("addClub", (name, description) => {
 	}
 	submitButton.click();
 });
+
+Cypress.Commands.add("gotoFirstClub", () => {
+	cy.login().then((token) => {
+		cy.getClubs(token).then((clubes) => {
+			cy.visit("/", {
+				failOnStatusCode: false,
+			});
+			cy.get(`div[id=${clubes[0]._id}]`).click();
+		});
+	});
+});
+
+/**
+ *  Add a member to the club via UI
+ */
+Cypress.Commands.add("addMember", (firstName, lastName, email) => {
+	cy.contains("button", "New member").click();
+	cy.get('input[name="member-name"]').type(firstName);
+	cy.get('input[name="member-lastname"]').type(lastName);
+	cy.get('input[name="member-email"]').type(email);
+	cy.contains("button", "Add Member").click();
+});
+
