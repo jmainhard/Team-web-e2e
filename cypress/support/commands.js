@@ -67,7 +67,15 @@ Cypress.Commands.add("getClubs", (token) => {
  */
 Cypress.Commands.add("addClub", (name, description) => {
 	cy.get("div[for=add-club]").click();
-	cy.get('input[aria-label="Club name"]').type(name);
-	cy.get('input[aria-label="Club description"]').type(description);
-	cy.contains('button', 'Add Club').click();
+	const clubDescriptionInput = cy.get('input[aria-label="Club description"]');
+	const clubNameInput = cy.get('input[aria-label="Club name"]');
+	const submitButton = cy.contains("button", "Add Club");
+
+	if (name) {
+		clubNameInput.type(name);
+	}
+	if (description) {
+		clubDescriptionInput.type(description);
+	}
+	submitButton.click();
 });

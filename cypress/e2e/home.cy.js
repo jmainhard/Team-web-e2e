@@ -23,7 +23,7 @@ describe("Home", () => {
 			});
 		});
 
-		it("[SUCESS H-3] Get list of clubs", () => {
+		it("[SUCCESS H-3] Get list of clubs", () => {
 			cy.visit("/");
 			cy.getClubs(adminToken).then((clubs) => {
 				clubs.forEach((club) => {
@@ -50,6 +50,15 @@ describe("Home", () => {
 				cy.get(".text-h3").should("contain", clubName);
 				cy.get("div[id=toolbar]").should("contain", clubName);
 			});
+		});
+
+		it("[Error H-5] Failure to add club due to missing name", () => {
+			cy.visit("/");
+			cy.addClub("", "", false);
+			cy.get('p[class="text-negative text-center error"]').should(
+				"contain",
+				"name is required"
+			);
 		});
 	});
 });
