@@ -21,21 +21,19 @@ describe("Club", () => {
 		cy.url().should("include", "/login");
 	});
 
-	describe("As a logged user", () => {
+	describe("On member card", () => {
 		beforeEach(() => {
 			// TODO: saveLocalStorage plugin to preserve localStorage between Cypress tests?
 			cy.login();
+			cy.gotoFirstClub();
 		});
 
-		it("[SUCCESS C-3]: Add member", () => {
+		it("[SUCCESS C-3]: Should add member", () => {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
 			const email = faker.internet.email();
 
-			cy.gotoFirstClub();
-
 			cy.get(".q-inner-loading").should("not.exist");
-
 			// TODO: Should follow KISS and DRY
 			cy.get(".text-h6")
 				.invoke("text")
@@ -64,11 +62,15 @@ describe("Club", () => {
 		it("[Error C-4]: Should fail to add member due to missing email", () => {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
-			cy.gotoFirstClub();
 			cy.addMember(firstName, lastName, " ");
 			cy.contains("email is required and must be a valid email").should(
 				"be.visible"
 			);
+		});
+
+		it('[Error C-5]: Should show "Unavailable" toast notification when clicking delete member', () => {
+			cy.get('button:contains("delete_forever")').first().click();
+			cy.get('.q-notification__message').should('contain', 'Unavailable');
 		});
 	});
 });
