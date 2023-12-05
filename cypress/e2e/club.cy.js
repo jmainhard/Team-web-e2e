@@ -10,4 +10,13 @@ describe("Club", () => {
 			});
 		});
 	});
+
+	it("[Error C-2]: Do not reach the website if token is missing", () => {
+		cy.visit("/club", {
+			failOnStatusCode: false,
+		});
+		cy.url().should("include", "/login");
+	});
+
+
 });
