@@ -35,7 +35,7 @@ describe("Club", () => {
 			cy.gotoFirstClub();
 
 			cy.get(".q-inner-loading").should("not.exist");
-			
+
 			// TODO: Should follow KISS and DRY
 			cy.get(".text-h6")
 				.invoke("text")
@@ -59,6 +59,16 @@ describe("Club", () => {
 							expect(newCount).to.eq(initialCount + 1);
 						});
 				});
+		});
+
+		it("[Error C-4]: Should fail to add member due to missing email", () => {
+			const firstName = faker.person.firstName();
+			const lastName = faker.person.lastName();
+			cy.gotoFirstClub();
+			cy.addMember(firstName, lastName, " ");
+			cy.contains("email is required and must be a valid email").should(
+				"be.visible"
+			);
 		});
 	});
 });
