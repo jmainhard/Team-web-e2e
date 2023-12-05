@@ -7,6 +7,11 @@ export const getMemberCount = (text) => {
 	return match ? parseInt(match[1]) : 0;
 };
 
+/**
+ * This function retrieves the first club and its member count.
+ * @param {string} token - The token used for authentication.
+ * @returns {Promise<{clubId: string, initialMembersCount: number}>} - A promise that resolves to an object containing the club ID and the initial member count.
+ */
 export function getFirstClubAndMembersCount(token) {
 	return cy.getFirstClub(token).then((firstClub) => {
 		return cy.getMembers(firstClub._id).then((members) => {
@@ -15,6 +20,11 @@ export function getFirstClubAndMembersCount(token) {
 	});
 }
 
+/**
+ * This function retrieves the member count of a specific club.
+ * @param {string} clubId - The ID of the club.
+ * @returns {Promise<number>} - A promise that resolves to the member count.
+ */
 export function getClubMemberCount(clubId) {
 	return cy.getMembers(clubId).then((members) => {
 		return members.length;
