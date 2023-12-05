@@ -1,5 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { getMemberCount } from "../support/helpers";
+import {
+	getMemberCount,
+	getClubMemberCount,
+	getFirstClubAndMembersCount,
+} from "../support/helpers";
 
 describe("Club", () => {
 	it("[SUCCESS C-1] club details", () => {
@@ -22,9 +26,10 @@ describe("Club", () => {
 	});
 
 	describe("On member card", () => {
+		let adminToken = null;
 		beforeEach(() => {
 			// TODO: saveLocalStorage plugin to preserve localStorage between Cypress tests?
-			cy.login();
+			cy.login().then((token) => (adminToken = token));
 			cy.gotoFirstClub();
 		});
 
@@ -59,18 +64,28 @@ describe("Club", () => {
 				});
 		});
 
-		it("[Error C-4]: Should fail to add member due to missing email", () => {
+		it.only("[Error C-4]: Should fail to add member due to missing email", () => {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
-			cy.addMember(firstName, lastName, " ");
-			cy.contains("email is required and must be a valid email").should(
-				"be.visible"
+
+			getFirstClubAndMembersCount(adminToken).then(
+				({ clubId, initialMembersCount }) => {
+					cy.addMember(firstName, lastName, " ");
+
+					getClubMemberCount(clubId).then((newMembersCount) => {
+						expect(newMembersCount).to.eq(initialMembersCount);
+					});
+
+					cy.contains("email is required and must be a valid email").should(
+						"be.visible"
+					);
+				}
 			);
 		});
 
 		it('[Error C-5]: Should show "Unavailable" toast notification when clicking delete member', () => {
 			cy.get('button:contains("delete_forever")').first().click();
-			cy.get('.q-notification__message').should('contain', 'Unavailable');
+			cy.get(".q-notification__message").should("contain", "Unavailable");
 		});
 	});
 });

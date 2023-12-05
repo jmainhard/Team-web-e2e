@@ -102,3 +102,19 @@ Cypress.Commands.add("addMember", (firstName, lastName, email) => {
 	cy.contains("button", "Add Member").click();
 });
 
+Cypress.Commands.add("getMembers", (clubId) => {
+	cy.login().then((token) => {
+		cy.request({
+			url: `${Cypress.env("api_server")}/clubs/${clubId}/members`,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}).then(({ body }) => {
+			return body.members;
+		});
+	});
+});
+
+Cypress.Commands.add("getFirstClub", (token) => {
+	cy.getClubs(token).then((clubs) => clubs[0]);
+});
