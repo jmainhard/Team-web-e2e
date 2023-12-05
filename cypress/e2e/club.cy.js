@@ -64,7 +64,7 @@ describe("Club", () => {
 				});
 		});
 
-		it.only("[Error C-4]: Should fail to add member due to missing email", () => {
+		it("[Error C-4]: Should fail to add member due to missing email", () => {
 			const firstName = faker.person.firstName();
 			const lastName = faker.person.lastName();
 
